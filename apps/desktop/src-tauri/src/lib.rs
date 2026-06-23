@@ -52,12 +52,14 @@ lazy_static! {
 struct OpenedUrls(Mutex<Option<Vec<url::Url>>>);
 
 fn opened_urls_to_string(urls: &[url::Url]) -> String {
+    // NOTE: the string is later passed to the frontend via serde_json::to_string
+    // (setup.rs) / update_window_opened_urls, which already escapes backslashes
+    // and quotes safely. Do NOT manually double backslashes here: that corrupts
+    // Windows UNC paths such as \\wsl.localhost\<distro>\...\note.md (WSL files),
+    // and the frontend never reverses the doubling — leading to blank editor
+    // content for files opened from WSL.
     urls.iter()
-        .map(|u| {
-            urlencoding::decode(u.as_str())
-                .unwrap()
-                .replace("\\", "\\\\")
-        })
+        .map(|u| urlencoding::decode(u.as_str()).unwrap().into_owned())
         .collect::<Vec<_>>()
         .join(",")
 }
