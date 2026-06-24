@@ -1,6 +1,10 @@
 name: Test CI
 
-on: push
+# 仅在分支推送时运行，避免 tag 推送（发版）时与 Release/Build Windows 重复触发。
+on:
+  push:
+    branches:
+      - '**'
 
 permissions:
   contents: write # to fetch code (actions/checkout)
