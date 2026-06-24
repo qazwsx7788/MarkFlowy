@@ -3,7 +3,7 @@ import useAiChatStore from '@/extensions/ai/useAiChatStore'
 import bus from '@/helper/eventBus'
 import { loadLocalThemeCss } from '@/helper/extensions'
 import { getFileObject, getFileObjectByPath, getSaveOpenedEditorEntries } from '@/helper/files'
-import { createFile, getFileNameFromPath, readDirectory, releaseSecurityScope } from '@/helper/filesys'
+import { createFile, getFileNameFromPath, fileUrlToPath, readDirectory, releaseSecurityScope } from '@/helper/filesys'
 import { logger } from '@/helper/logger'
 import { checkUpdate } from '@/helper/updater'
 import { i18nInit } from '@/i18n'
@@ -184,13 +184,7 @@ async function appWorkspaceSetup() {
 
     if (window.openedUrls) {
       logger.debug('Processing window.openedUrls:', window.openedUrls)
-      const openedPaths = window.openedUrls?.split(',').map((p) => {
-        if (p.startsWith('file://')) {
-          p = p.slice(7)
-        }
-
-        return p
-      })
+      const openedPaths = window.openedUrls?.split(',').map((p) => fileUrlToPath(p))
 
       window.openedUrls = null
 
@@ -364,12 +358,7 @@ const useAppSetup = () => {
     const unListenOpenedUrls = currentWindow.listen<string>('opened-urls', async ({ payload }) => {
       logger.debug('Received opened-urls event:', payload)
       if (payload) {
-        const openedPaths = payload.split(',').map((p) => {
-          if (p.startsWith('file://')) {
-            return p.slice(7)
-          }
-          return p
-        })
+        const openedPaths = payload.split(',').map((p) => fileUrlToPath(p))
         await handleOpenedPaths(openedPaths)
         currentWindow.setFocus()
       }

@@ -28,7 +28,7 @@ vi.mock('../files', () => ({
   setFileObjectByPath: vi.fn(),
 }))
 
-import { getFileNameFromPath, getFolderPathFromPath, isMdFile } from '../filesys'
+import { fileUrlToPath, getFileNameFromPath, getFolderPathFromPath, isMdFile } from '../filesys'
 
 describe('test helper/filesys ', () => {
   it('getFileNameFromPath', () => {
@@ -55,5 +55,31 @@ describe('test helper/filesys ', () => {
 
     expect(getFolderPathFromPath(macPath)).toBe('/path/to')
     expect(getFolderPathFromPath(winPath)).toBe('C:\\path\\to')
+  })
+
+  describe('fileUrlToPath', () => {
+    it('converts a Windows UNC (WSL) file URL to a UNC path', () => {
+      expect(fileUrlToPath('file://wsl.localhost/Ubuntu-22.04/home/ysd/note.md')).toBe(
+        '\\\\wsl.localhost\\Ubuntu-22.04\\home\\ysd\\note.md',
+      )
+    })
+
+    it('converts a Windows drive-letter file URL to a backslash path', () => {
+      expect(fileUrlToPath('file:///C:/Users/ysd/note.md')).toBe('C:\\Users\\ysd\\note.md')
+    })
+
+    it('converts a unix file URL to a posix path', () => {
+      expect(fileUrlToPath('file:///home/ysd/note.md')).toBe('/home/ysd/note.md')
+    })
+
+    it('returns bare (non-file://) paths unchanged', () => {
+      expect(fileUrlToPath('\\\\wsl.localhost\\share\\file.md')).toBe('\\\\wsl.localhost\\share\\file.md')
+      expect(fileUrlToPath('C:\\Users\\ysd\\note.md')).toBe('C:\\Users\\ysd\\note.md')
+      expect(fileUrlToPath('/home/ysd/note.md')).toBe('/home/ysd/note.md')
+    })
+
+    it('percent-decodes the path', () => {
+      expect(fileUrlToPath('file:///home/ysd/a%20b.md')).toBe('/home/ysd/a b.md')
+    })
   })
 })

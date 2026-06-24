@@ -687,8 +687,20 @@ pub fn run() {
                 // NOTICE: `args` may include URL protocol (`your-app-protocol://`) or arguments (`--`) if app supports them.
                 let mut urls = Vec::new();
                 for arg in env::args().skip(1) {
-                    if let Ok(url) = url::Url::parse(&arg) {
-                        urls.push(url);
+                    match url::Url::parse(&arg) {
+                        Ok(url) => urls.push(url),
+                        Err(_) => {
+                            // arg is a bare filesystem path (e.g. a Windows UNC path such
+                            // as \\wsl.localhost\<distro>\...\note.md, or C:\...). Url::parse
+                            // rejects these as "relative URL without a base", so convert via
+                            // path_to_file_url — the same path used by the single-instance
+                            // callback and the CLI `open` subcommand — to keep all entry
+                            // points consistent.
+                            let url_str = path_to_file_url(&arg, None);
+                            if let Ok(url) = url::Url::parse(&url_str) {
+                                urls.push(url);
+                            }
+                        }
                     }
                 }
 

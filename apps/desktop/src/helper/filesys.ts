@@ -187,6 +187,44 @@ export function getFileNameFromPath(filePath: string) {
   return filePath
 }
 
+/**
+ * Convert a file:// URL to a local filesystem path.
+ *
+ * Handles all forms the Rust side emits (via path_to_file_url / Url::parse):
+ *  - Windows UNC : file://wsl.localhost/Ubuntu-22.04/home/x/note.md -> \\wsl.localhost\Ubuntu-22.04\home\x\note.md
+ *  - Windows drive: file:///C:/Users/x/note.md                       -> C:\Users\x\note.md
+ *  - Unix        : file:///home/x/note.md                            -> /home/x/note.md
+ *
+ * Strings that are already bare paths (no `file://` scheme) are returned
+ * unchanged, preserving backwards compatibility.
+ *
+ * NOTE: do NOT use a naive `slice('file://'.length)` here — for UNC URLs
+ * (file://<host>/...) that strips the authority and yields an invalid path,
+ * which is exactly the WSL "File is not exist" bug.
+ */
+export function fileUrlToPath(input: string): string {
+  if (!input.startsWith('file://')) {
+    return input
+  }
+
+  const url = new URL(input)
+
+  // A non-empty host other than "localhost" denotes a UNC path
+  // (e.g. \\wsl.localhost\..., \\server\share\...).
+  if (url.host && url.host !== 'localhost') {
+    return `\\\\${url.host}${url.pathname.replace(/\//g, '\\')}`
+  }
+
+  // Otherwise it's a drive-letter or unix path; pathname looks like
+  // "/C:/Users/..." (Windows) or "/home/..." (unix).
+  const pathname = decodeURIComponent(url.pathname)
+  if (/^\/[A-Za-z]:[\\/]/.test(pathname)) {
+    return pathname.slice(1).replace(/\//g, '\\')
+  }
+
+  return pathname
+}
+
 export function getFolderPathFromPath(filePath?: string) {
   if (!filePath) return filePath
 
