@@ -93,6 +93,10 @@
     "close": {
       "title": "是否要保存更改？",
       "description": "你有未保存的文件，确定要退出吗？"
+    },
+    "refresh": {
+      "title": "从磁盘重新加载？",
+      "description": "该文件有未保存的修改，从磁盘重新加载将丢弃这些修改。"
     }
   },
   "error": {
@@ -160,7 +164,10 @@
       "close_right": "关闭右侧",
       "close_all": "关闭全部",
       "export_html": "导出为 HTML",
-      "export_image": "导出为图片"
+      "export_image": "导出为图片",
+      "refresh": "刷新",
+      "refresh_success": "已从磁盘重新加载文件",
+      "refresh_no_path": "该文件尚未保存，无需刷新"
     }
   },
   "notification": {},

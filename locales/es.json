@@ -87,6 +87,10 @@
     "close": {
       "title": "¿Desea guardar los cambios?",
       "description": "¿Tiene archivos no guardados, está seguro de que desea salir?"
+    },
+    "refresh": {
+      "title": "¿Recargar desde el disco?",
+      "description": "Este archivo tiene cambios sin guardar. Recargar desde el disco los descartará."
     }
   },
   "error": {
@@ -149,7 +153,10 @@
       "close_right": "Cerrar a la derecha",
       "close_all": "Cerrar todo",
       "export_html": "Exportar a HTML",
-      "export_image": "Exportar como imagen"
+      "export_image": "Exportar como imagen",
+      "refresh": "Actualizar",
+      "refresh_success": "Archivo recargado desde el disco",
+      "refresh_no_path": "Este archivo aún no se ha guardado, no hay nada que recargar"
     }
   },
   "notification": {},

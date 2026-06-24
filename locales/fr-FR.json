@@ -84,6 +84,10 @@
     "close": {
       "title": "Voulez-vous enregistrer les modifications?",
       "description": "Avez-vous des fichiers non sauvegardés, êtes-vous sûr de vouloir quitter?"
+    },
+    "refresh": {
+      "title": "Recharger depuis le disque?",
+      "description": "Ce fichier contient des modifications non enregistrées. Le recharger depuis le disque les annulera."
     }
   },
   "error": {
@@ -146,7 +150,10 @@
       "close_right": "Fermer à droite",
       "close_all": "Tout fermer",
       "export_html": "Exporter au format HTML",
-      "export_image": "Exporter en tant qu'image"
+      "export_image": "Exporter en tant qu'image",
+      "refresh": "Actualiser",
+      "refresh_success": "Fichier rechargé depuis le disque",
+      "refresh_no_path": "Ce fichier n'a pas encore été enregistré, rien à recharger"
     }
   },
   "notification": {},

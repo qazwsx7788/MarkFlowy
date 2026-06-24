@@ -87,6 +87,10 @@
     "close": {
       "title": "変更を保存しますか？",
       "description": "未保存のファイルがあります。終了してもよろしいですか？"
+    },
+    "refresh": {
+      "title": "ディスクから再読み込みしますか？",
+      "description": "このファイルには未保存の変更があります。ディスクから再読み込みすると、それらの変更は破棄されます。"
     }
   },
   "error": {
@@ -154,7 +158,10 @@
       "close_right": "右を閉じる",
       "close_all": "すべて閉じる",
       "export_html": "HTMLにエクスポート",
-      "export_image": "画像にエクスポート"
+      "export_image": "画像にエクスポート",
+      "refresh": "更新",
+      "refresh_success": "ディスクからファイルを再読み込みしました",
+      "refresh_no_path": "このファイルはまだ保存されていないため、再読み込みする内容はありません"
     }
   },
   "notification": {},

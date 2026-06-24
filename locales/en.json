@@ -87,6 +87,10 @@
     "close": {
       "title": "Do you want to save the changes?",
       "description": "You have unsaved files, are you sure you want to exit?"
+    },
+    "refresh": {
+      "title": "Reload from disk?",
+      "description": "This file has unsaved changes. Reloading from disk will discard them."
     }
   },
   "error": {
@@ -159,7 +163,10 @@
       "close_right": "Close right",
       "close_all": "Close all",
       "export_html": "Export to HTML",
-      "export_image": "Export to Image"
+      "export_image": "Export to Image",
+      "refresh": "Refresh",
+      "refresh_success": "File reloaded from disk",
+      "refresh_no_path": "This file has not been saved yet, nothing to reload"
     }
   },
   "notification": {},

@@ -69,6 +69,20 @@ export const Container = styled.div`
     box-sizing: border-box;
     border-bottom: 1px solid ${(props) => props.theme.borderColor};
     border-left: 1px solid ${(props) => props.theme.borderColor};
+
+    /* Spinner animation for the refresh button's loader icon */
+    @keyframes mf-refresh-rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .icon-rotate {
+      animation: mf-refresh-rotate 0.9s linear infinite;
+    }
   }
 
   .code-contents {
