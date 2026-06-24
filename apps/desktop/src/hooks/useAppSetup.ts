@@ -1,5 +1,4 @@
 import { commandRegistry } from '@/commands'
-import useAiChatStore from '@/extensions/ai/useAiChatStore'
 import bus from '@/helper/eventBus'
 import { loadLocalThemeCss } from '@/helper/extensions'
 import { getFileObject, getFileObjectByPath, getSaveOpenedEditorEntries } from '@/helper/files'
@@ -274,7 +273,6 @@ const listener = (event: MessageEvent) => {
 
 const useMainStoreSetup = () => {
   useAppSettingStore()
-  useAiChatStore()
 }
 
 const appSetup = once(async function () {

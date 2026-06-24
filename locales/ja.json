@@ -275,69 +275,6 @@
       "shortcut_conflict": "このショートカットキーはすでに占有されています",
       "desc": "キーボードショートカットとキー動作の設定には、ショートカットキーの競合検出などの設定が含まれます。"
     },
-    "ai": {
-      "label": "AI",
-      "ChatGPT": {
-        "label": "ChatGPT",
-        "api_base": {
-          "label": "API Base",
-          "desc": "API Base for ChatGPT."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "API key for ChatGPT."
-        },
-        "models": {
-          "label": "Models",
-          "desc": "モデルのリストをカンマで区切って指定します。デフォルトは \"gpt-3.5-turbo, gpt-4-32k, gpt-4\""
-        }
-      },
-      "DeepSeek": {
-        "label": "DeepSeek",
-        "api_base": {
-          "label": "API Base",
-          "desc": "API Base for DeepSeek."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "API key for DeepSeek."
-        },
-        "models": {
-          "label": "Models",
-          "desc": "モデルのリストをカンマで区切って指定します。デフォルトは \"\""
-        }
-      },
-      "Ollama": {
-        "label": "Ollama",
-        "api_base": {
-          "label": "API Base",
-          "desc": "API Base for Ollama."
-        },
-        "models": {
-          "label": "Models",
-          "desc": "モデルのリストをカンマで区切って指定します。デフォルトは \"\""
-        }
-      },
-      "model": {
-        "label": "AIモデル"
-      },
-      "Google": {
-        "label": "Google",
-        "api_base": {
-          "label": "API Base",
-          "desc": "Google AIのAPIアドレス."
-        },
-        "api_key": {
-          "label": "APIキー",
-          "desc": "Google AIのAPIキー。"
-        },
-        "models": {
-          "label": "モデルリスト",
-          "desc": "モデルリスト。モデル名をコンマで分割し、デフォルトは「」です"
-        }
-      },
-      "desc": "AIモデル構成、baseUrlが空の場合はデフォルトで公式アドレスが要求され、リクエストヘッダーはキーなどの情報を設定するために使用できます。具体的には、サービスプロバイダのドキュメントに基づいてください。"
-    },
     "resetAppConf": {
       "label": "アプリケーション設定のリセット",
       "desc": "アプリケーション設定をリセットして、デフォルト設定に戻します。テーマ、言語、自動保存など全ての設定がリセットされ、元に戻すことはできません。",
@@ -435,22 +372,6 @@
       "github_issue": "Issueまたは提案を提出する",
       "github_issue_desc": "問題が発生した場合やアドバイスがある場合は、GitHubでIssueを提出してください。"
     },
-    "copilot": {
-      "label": "Copilot",
-      "desc": "AIは文章の配置を補助して、あなたが配置したAIベンダーとモデルを選択して、パラメータ量2b程度以下の小さなモデルを選択して、応答速度を高めることを提案します。",
-      "enable": {
-        "label": "Copilotを有効にする",
-        "desc": "AI補助ライティング機能を有効にする"
-      },
-      "provider": {
-        "label": "供給業者",
-        "desc": "AIサービスプロバイダを選択します"
-      },
-      "model": {
-        "label": "モデル",
-        "desc": "使用するAIモデルを選択します"
-      }
-    },
     "themeStore": {
       "label": "テーマショップ",
       "desc": "コミュニティが作成したテーマを閲覧してダウンロードし、エディタの外観を豊かにします。",
@@ -530,10 +451,6 @@
       "label": "リクエストヘッダの設定",
       "desc": "カスタムHTTPリクエストヘッダーを追加し、複数のキー値ペア構成をサポートします。"
     }
-  },
-  "ai": {
-    "capabilities": "機能",
-    "export_conversation": "ワンクリックで会話内容をmdファイルにエクスポート"
   },
   "statusBar": {
     "words": "ワード",

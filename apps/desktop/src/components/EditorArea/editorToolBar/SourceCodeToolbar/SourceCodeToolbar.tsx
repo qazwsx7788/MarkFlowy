@@ -12,7 +12,6 @@ import {
   ClipboardReadFunction,
 } from '@markflowy/interface'
 import { MenuList } from '../components/MenuList'
-import { AIButton } from '../WysiwygToolbar/components/AIButton'
 import { sourceCodeCodemirrorViewMap } from '../../TextEditor'
 import { clipboardRead } from '@/helper/clipboard'
 
@@ -51,7 +50,6 @@ export const SourceCodeToolbar: FC = () => {
     <ToolbarWrapper ref={containerRef}>
       <ToolbarSection id="common" registerWidth={registerItemWidth} hidden={hiddenIds.has('common')}>
         <MenuList size='small' />
-        <AIButton />
       </ToolbarSection>
 
       <ToolbarSection id="history" registerWidth={registerItemWidth} hidden={hiddenIds.has('history')}>

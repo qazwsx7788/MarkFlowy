@@ -270,69 +270,6 @@
       "shortcut_conflict": "La tecla de acceso directo está ocupada",
       "desc": "Configuración de los atajos de teclado y el comportamiento de las teclas, incluidas las configuraciones relacionadas, como la detección de conflictos de atajos."
     },
-    "ai": {
-      "label": "AI",
-      "model": {
-        "label": "Modelo AI"
-      },
-      "ChatGPT": {
-        "label": "ChatGPT",
-        "api_base": {
-          "label": "API Base",
-          "desc": "API Base de ChatGPT"
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "API Key de ChatGPT"
-        },
-        "models": {
-          "label": "Modelo",
-          "desc": "Una lista de modelos separados por coma, el valor predeterminado es \"gpt-3.5-turbo, gpt-4-32k, gpt-4\""
-        }
-      },
-      "DeepSeek": {
-        "label": "DeepSeek",
-        "api_base": {
-          "label": "Base de API",
-          "desc": "Dirección API de DeepSeek."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "La clave API de DeepSeek."
-        },
-        "models": {
-          "label": "Lista de modelos",
-          "desc": "Lista de modelos, divida el nombre del modelo con comas, el valor predeterminado es \"\""
-        }
-      },
-      "Ollama": {
-        "label": "Ollama",
-        "api_base": {
-          "label": "Base de API",
-          "desc": "Dirección API de Ollama."
-        },
-        "models": {
-          "label": "Lista de modelos",
-          "desc": "Lista de modelos, divida el nombre del modelo con comas, el valor predeterminado es \"\""
-        }
-      },
-      "Google": {
-        "label": "Google",
-        "api_base": {
-          "label": "Base de API",
-          "desc": "Dirección API de Google AI."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "La clave API de Google AI."
-        },
-        "models": {
-          "label": "Lista de modelos",
-          "desc": "Lista de modelos, divida el nombre del modelo con comas, el valor predeterminado es \"\""
-        }
-      },
-      "desc": "Para la configuración del modelo AI, el baseUrl solicitará la dirección oficial de forma predeterminada cuando esté vacío. El encabezado de solicitud se puede utilizar para configurar la clave y otra información. Para obtener más información, consulte la documentación del proveedor de servicios."
-    },
     "resetAppConf": {
       "label": "Restablecer la configuración de la aplicación",
       "desc": "Restablecer la configuración de la aplicación y restaurar la configuración predeterminada. Esta acción restablece todos los ajustes, incluidos el tema, el idioma, el guardado automático, etc., y no se puede recuperar.",
@@ -430,22 +367,6 @@
       "github_issue": "Presentar un Issue o una propuesta",
       "github_issue_desc": "Si tiene problemas o tiene alguna sugerencia, bienvenido a enviar Issue en GitHub."
     },
-    "copilot": {
-      "label": "Copilot",
-      "desc": "Configuración de escritura asistida por IA, seleccione el proveedor y el modelo de IA que ha configurado, y se recomienda seleccionar un modelo pequeño con una cantidad de parámetros de aproximadamente 2b o menos para mejorar la velocidad de respuesta.",
-      "enable": {
-        "label": "Habilitar Copilot",
-        "desc": "Habilitar la escritura asistida por IA"
-      },
-      "provider": {
-        "label": "Proveedor",
-        "desc": "Elegir un proveedor de servicios de IA"
-      },
-      "model": {
-        "label": "Modelo",
-        "desc": "Elegir el modelo de IA que se utilizará"
-      }
-    },
     "themeStore": {
       "label": "Tienda de temas",
       "desc": "Explorar y descargar los temas creados por la comunidad para enriquecer la apariencia de su editor.",
@@ -530,10 +451,6 @@
       "label": "Configurar el encabezado de la solicitud",
       "desc": "Agrega un encabezado de solicitud HTTP personalizado que admite varias configuraciones de pares clave-valor."
     }
-  },
-  "ai": {
-    "capabilities": "Función",
-    "export_conversation": "Exportar contenido de conversación como archivo md con un clic"
   },
   "statusBar": {
     "words": "Palabras",

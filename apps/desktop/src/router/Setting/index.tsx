@@ -15,7 +15,6 @@ import { memo, useEffect, useState } from 'react'
 import { useTranslation } from '@/i18n'
 import { Button, toast } from 'zens'
 import SettingGroup from './component/SettingGroup'
-import { CopilotSetting } from './CopilotSetting'
 import { ImageSetting } from './ImageSetting'
 import { KeyboardTable } from './KeyboardTable'
 import { Container } from './styles'
@@ -102,10 +101,6 @@ function Setting() {
 
     if (curGroupKey === 'support') {
       return <Support />
-    }
-
-    if (curGroupKey === 'copilot') {
-      return <CopilotSetting />
     }
 
     return curGroupKeys.map((key) => {
