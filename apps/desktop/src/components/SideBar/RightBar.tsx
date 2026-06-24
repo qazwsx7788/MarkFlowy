@@ -9,11 +9,6 @@ const TableOfContentExtension = lazy(async () => {
   return { default: () => <>{TABLEOFCONTENT.components}</> }
 })
 
-const AIExtension = lazy(async () => {
-  const { default: aiExtension } = await import('@/extensions/ai')
-  return { default: () => <>{aiExtension.components}</> }
-})
-
 function RightBar() {
   const [activeRightBarItemKey, setActiveRightBarItemKey] = useState<RIGHTBARITEMKEYS>(
     RIGHTBARITEMKEYS.TableOfContent,
@@ -28,16 +23,6 @@ function RightBar() {
         components: (
           <Suspense fallback={null}>
             <TableOfContentExtension />
-          </Suspense>
-        ),
-      },
-      {
-        title: RIGHTBARITEMKEYS.AI,
-        key: RIGHTBARITEMKEYS.AI,
-        icon: <i className='ri-chat-smile-ai-line' />,
-        components: (
-          <Suspense fallback={null}>
-            <AIExtension />
           </Suspense>
         ),
       },

@@ -16,15 +16,6 @@
       "searchInputPlaceholder": "Input language",
       "frontMatterPlaceholder": "input yaml front matter"
     },
-    "ai": {
-      "generate": "Generate Text",
-      "stop": "Stop",
-      "retry": "Retry",
-      "regenerate": "Regenerate",
-      "preview": "Preview",
-      "error": "Error occurred",
-      "prompt": "Prompt"
-    },
     "toolbar": {
       "undo": "Undo",
       "redo": "Redo",

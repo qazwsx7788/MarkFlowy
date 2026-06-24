@@ -11,15 +11,12 @@ import { corePreset } from '@rme-sdk/preset-core'
 import { ReactComponentExtension } from '@rme-sdk/react'
 import { ClipboardReadFunction, clipboardRead } from '../utils/clipboard-read'
 import { isBrowser } from '../utils/common'
-import { AIExtension } from './Ai'
-import { AIOptions } from './Ai/ai-types'
 import { LineBlockquoteExtension } from './BlockQuote'
 import { ClipboardExtension } from './Clipboard'
 import { LineCodeMirrorExtension } from './CodeMirror/codemirror-extension'
 import { CustomCopyFunction } from './CodeMirror/codemirror-types'
 import { CodemirrorOptions, getSetupByCodemirrorOptions } from './CodeMirror/setup'
 import { CommonKeymapExtension } from './CommonKeymap'
-import { CopilotExtension } from './Copilot/copilot-extension'
 import { FindExtension } from './Find/find-extension'
 import { HandleInputExtension } from './HandleInput/handle-input-extension'
 import { LineHardBreakExtension } from './HardBreak'
@@ -62,8 +59,6 @@ export type ExtensionsOptions = {
   imageHostingHandler?: (src: string) => Promise<string>
 
   imagePasteHandler?: (src: string) => Promise<string>
-
-  ai?: AIOptions
 
   customCopyFunction?: CustomCopyFunction
 
@@ -199,13 +194,6 @@ function extensions(options: ExtensionsOptions): any[] {
     new NodeIndicatorExtension(),
     typewriterScrollExtension,
   ]
-
-  if (options.ai) {
-    res.unshift(new AIExtension(options.ai))
-    if (options.ai.copilot) {
-      res.unshift(new CopilotExtension(options.ai.copilot))
-    }
-  }
 
   return res
 }

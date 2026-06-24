@@ -397,22 +397,6 @@
       "github_issue": "提交 Issue 或建议",
       "github_issue_desc": "如果你遇到问题或有任何建议，欢迎在 GitHub 上提交 Issue。"
     },
-    "copilot": {
-      "label": "Copilot",
-      "desc": "AI 辅助写作配置，选择你配置好的 AI 供应商和模型，建议选择参数量 2b 左右或以下的小模型，以提高响应速度。",
-      "enable": {
-        "label": "启用 Copilot",
-        "desc": "启用 AI 辅助写作功能"
-      },
-      "provider": {
-        "label": "供应商",
-        "desc": "选择 AI 服务提供商"
-      },
-      "model": {
-        "label": "模型",
-        "desc": "选择使用的 AI 模型"
-      }
-    },
     "themeStore": {
       "label": "主题商店",
       "desc": "浏览和下载社区创建的主题，丰富你的编辑器外观。",
@@ -434,69 +418,6 @@
       "remove_local_theme": "确认移除本地主题\"{{name}}\" 吗？这会删除文件夹下的文件。",
       "online_themes": "在线主题",
       "local_css_files": "本地 CSS 文件"
-    },
-    "ai": {
-      "label": "AI",
-      "desc": "AI模型配置，baseUrl 空时默认会请求官方地址，请求头可以用来配置密钥等信息，具体请根据服务提供方的文档。",
-      "model": {
-        "label": "AI 模型"
-      },
-      "ChatGPT": {
-        "label": "ChatGPT",
-        "api_base": {
-          "label": "API Base",
-          "desc": " ChatGPT 的 API 地址."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "ChatGPT 的 API key。"
-        },
-        "models": {
-          "label": "模型列表",
-          "desc": "模型列表, 用逗号分割模型名称, 默认为\"gpt-3.5-turbo, gpt-4-32k, gpt-4\""
-        }
-      },
-      "DeepSeek": {
-        "label": "DeepSeek",
-        "api_base": {
-          "label": "API Base",
-          "desc": " DeepSeek 的 API 地址."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "DeepSeek 的 API key。"
-        },
-        "models": {
-          "label": "模型列表",
-          "desc": "模型列表, 用逗号分割模型名称, 默认为\"\""
-        }
-      },
-      "Ollama": {
-        "label": "Ollama",
-        "api_base": {
-          "label": "API Base",
-          "desc": " Ollama 的 API 地址."
-        },
-        "models": {
-          "label": "模型列表",
-          "desc": "模型列表, 用逗号分割模型名称, 默认为\"\""
-        }
-      },
-      "Google": {
-        "label": "Google",
-        "api_base": {
-          "label": "API Base",
-          "desc": " Google AI 的 API 地址."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "Google AI 的 API key。"
-        },
-        "models": {
-          "label": "模型列表",
-          "desc": "模型列表, 用逗号分割模型名称, 默认为\"\""
-        }
-      }
     }
   },
   "updater": {
@@ -535,9 +456,5 @@
       "editor_toggleH5": "切换到H5",
       "editor_toggleH6": "切换到H6"
     }
-  },
-  "ai": {
-    "capabilities": "功能",
-    "export_conversation": "一键导出对话内容为 md 文件"
   }
 }

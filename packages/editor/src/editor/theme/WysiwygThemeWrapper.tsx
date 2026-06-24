@@ -594,13 +594,6 @@ export const WysiwygThemeWrapper = styled.div.attrs<WrapperProps>((p) => ({
     animation: loading-icon-spin 1s linear infinite;
   }
 
-  .rme-copilot-suggestion {
-    color: ${(props) => props.theme.labelFontColor};
-    opacity: 0.6;
-    white-space: pre-wrap;
-    pointer-events: none;
-  }
-
   @keyframes loading-icon-spin {
     0% {
       transform: rotate(0deg);
@@ -1022,10 +1015,6 @@ export const WysiwygThemeWrapper = styled.div.attrs<WrapperProps>((p) => ({
     padding: 0 2px;
     vertical-align: bottom;
     z-index: ${editorZIndex.inlineWidget};
-  }
-
-  & .ai-block-node-view-wrapper {
-    border-radius: ${(props) => props.theme.smallBorderRadius};
   }
 
   & .ProseMirror-selectednode {

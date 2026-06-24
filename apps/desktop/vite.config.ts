@@ -45,10 +45,6 @@ export default defineConfig({
             return 'vendor-tauri'
           }
 
-          if (/[\\/]node_modules[\\/](@ai-sdk|ai|ollama-ai-provider-v2)[\\/]/.test(id)) {
-            return 'vendor-ai'
-          }
-
           if (/[\\/]node_modules[\\/](antd|@ant-design|@rc-component|rc-)[\\/]/.test(id)) {
             return 'vendor-antd'
           }

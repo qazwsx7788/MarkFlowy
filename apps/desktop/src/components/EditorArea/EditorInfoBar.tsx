@@ -1,18 +1,15 @@
 import { commandRegistry } from '@/commands'
-import useAiChatStore, { getCurrentAISettingData } from '@/extensions/ai/useAiChatStore'
 import useBookMarksStore from '@/extensions/bookmarks/useBookMarksStore'
 import bus from '@/helper/eventBus'
 import { getFileObject } from '@/helper/files'
 import { FileResultCode } from '@/helper/filesys'
 import { dialog } from '@/services/dialog'
-import { addNewMarkdownFileEdit, isEmptyEditor } from '@/services/editor-file'
+import { isEmptyEditor } from '@/services/editor-file'
 import { currentWindow } from '@/services/windows'
 import { getWorkspace, WorkSpace } from '@/services/workspace'
 import { useEditorStateStore, useEditorStore } from '@/stores'
-import useAppSettingStore from '@/stores/useAppSettingStore'
 import useEditorViewTypeStore from '@/stores/useEditorViewTypeStore'
 import useFileTypeConfigStore from '@/stores/useFileTypeConfigStore'
-import useAppTasksStore from '@/stores/useTasksStore'
 import { invoke } from '@tauri-apps/api/core'
 import { debounce } from 'lodash'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -33,13 +30,10 @@ const EMPTY_FILE_NORMAL_INFO: FileNormalInfo = {
 }
 
 export const EditorInfoBar = memo(() => {
-  const { activeId, folderData, getEditorDelegate, getEditorContent } = useEditorStore()
+  const { activeId, folderData, getEditorContent } = useEditorStore()
   const [workspace, setWorkspace] = useState<WorkSpace | null>(null)
 
   const { editorViewTypeMap } = useEditorViewTypeStore()
-  const { getPostSummary, getPostTranslate } = useAiChatStore()
-  const { settingData } = useAppSettingStore()
-  const { addAppTask } = useAppTasksStore()
   const { t } = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
@@ -100,53 +94,6 @@ export const EditorInfoBar = memo(() => {
     }
   }, [workspace?.syncMode, getFileNormalInfo])
 
-  const fetchCurFileSummary = useCallback(async () => {
-    const content = getEditorContent(curFile?.id || '')
-    const aiSettingData = getCurrentAISettingData()
-    const res = await addAppTask<ReturnType<typeof getPostSummary>>({
-      title: 'AI: Retrieving article abstract',
-      promise: getPostSummary(content || '', aiSettingData),
-    })
-    addNewMarkdownFileEdit({
-      fileName: 'summary.md',
-      content: `
-# Summary
-
-${res}
-    `,
-    })
-  }, [
-    addAppTask,
-    curFile?.id,
-    getEditorContent,
-    getPostSummary,
-    settingData.extensions_chatgpt_apikey,
-  ])
-
-  const fetchCurFileTranslate = useCallback(
-    async (targetLang: string) => {
-      const content = getEditorContent(curFile?.id || '')
-      const aiSettingData = getCurrentAISettingData()
-
-      const res = await addAppTask({
-        title: 'AI: Translating article',
-        promise: getPostTranslate(content || '', aiSettingData, targetLang),
-      })
-
-      addNewMarkdownFileEdit({
-        fileName: `translate-${targetLang}.md`,
-        content: `${res}`,
-      })
-    },
-    [
-      addAppTask,
-      curFile?.id,
-      getEditorContent,
-      getPostTranslate,
-      settingData.extensions_chatgpt_apikey,
-    ],
-  )
-
   const convertText = useCallback(
     async (variant: string) => {
       const content = getEditorContent(curFile?.id || '')
@@ -173,8 +120,6 @@ ${res}
     const { findMark } = useBookMarksStore.getState()
     const curBookMark = findMark(curFile?.path || '')
 
-    const { aiProvider } = useAiChatStore.getState()
-
     showContextMenu({
       x: rect.x,
       y: rect.y + rect.height,
@@ -190,33 +135,6 @@ ${res}
               commandRegistry.execute('open_bookmark_dialog', curFile)
             }
           },
-        },
-        {
-          label: `AI(${aiProvider})`,
-          value: 'AI',
-          children: [
-            {
-              label: t('action.summary'),
-              value: 'summary',
-              handler: fetchCurFileSummary,
-            },
-            {
-              label: t('action.translate'),
-              value: 'translate',
-              handler: async () => {
-                const val = await dialog.inputConfirm({
-                  title: t('action.translate'),
-                  inputProps: {
-                    placeholder: t('placeholder.translate'),
-                  },
-                })
-
-                if (val) {
-                  fetchCurFileTranslate(val)
-                }
-              },
-            },
-          ],
         },
         {
           type: 'divider' as const,
@@ -263,10 +181,7 @@ ${res}
     })
   }, [
     curFile,
-    getEditorDelegate,
     t,
-    fetchCurFileSummary,
-    fetchCurFileTranslate,
     convertText,
   ])
 
@@ -305,7 +220,7 @@ ${res}
         return curFileTypeConfig ? curFileTypeConfig?.supportedModes?.includes(item.value) : false
       }),
     })
-  }, [curFile, editorViewTypeMap, t, fetchCurFileSummary, fetchCurFileTranslate])
+  }, [curFile, editorViewTypeMap, t])
 
   const editorViewType = editorViewTypeMap.get(curFile?.id || '') || 'wysiwyg'
 

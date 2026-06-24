@@ -11,7 +11,6 @@ import {
   CommandButton,
 } from '@markflowy/interface'
 import { MenuList } from '../components/MenuList'
-import { AIButton } from './components/AIButton'
 
 export const WysiwygToolbar: FC = () => {
   const { editorCtxMap, activeId } = useEditorStore()
@@ -49,7 +48,6 @@ export const WysiwygToolbar: FC = () => {
         hidden={hiddenIds.has('common')}
       >
         <MenuList showTypewriterScroll />
-        <AIButton />
       </ToolbarSection>
 
       <ToolbarSection

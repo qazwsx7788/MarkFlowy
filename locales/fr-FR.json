@@ -267,69 +267,6 @@
       "shortcut_conflict": "Le raccourci a été occupé",
       "desc": "Configuration des raccourcis clavier et du comportement des touches, y compris les paramètres associés tels que la détection des conflits de raccourcis."
     },
-    "ai": {
-      "label": "AI",
-      "model": {
-        "label": "AI modèle"
-      },
-      "ChatGPT": {
-        "label": "ChatGPT",
-        "api_base": {
-          "label": "API Base",
-          "desc": "API Base for ChatGPT."
-        },
-        "api_key": {
-          "label": "clé API",
-          "desc": "clé API pour ChatGPT."
-        },
-        "models": {
-          "label": "Models",
-          "desc": "A model list separated by commas, default is \"gpt-3.5-turbo, gpt-4-32k, gpt-4\""
-        }
-      },
-      "DeepSeek": {
-        "label": "DeepSeek",
-        "api_base": {
-          "label": "Base API",
-          "desc": "Adresse API de DeepSeek."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "La clé API de DeepSeek."
-        },
-        "models": {
-          "label": "Liste des modèles",
-          "desc": "Liste de modèles, avec un nom de modèle divisé par une virgule, par défaut \"\""
-        }
-      },
-      "Ollama": {
-        "label": "Ollama",
-        "api_base": {
-          "label": "Base API",
-          "desc": "Adresse de l'API d'Ollama."
-        },
-        "models": {
-          "label": "Liste des modèles",
-          "desc": "Liste de modèles, avec un nom de modèle divisé par une virgule, par défaut \"\""
-        }
-      },
-      "Google": {
-        "label": "Google",
-        "api_base": {
-          "label": "Base API",
-          "desc": "Adresse API de Google AI."
-        },
-        "api_key": {
-          "label": "API Key",
-          "desc": "La clé API de Google AI."
-        },
-        "models": {
-          "label": "Liste des modèles",
-          "desc": "Liste de modèles, avec un nom de modèle divisé par une virgule, par défaut \"\""
-        }
-      },
-      "desc": "Configuration du modèle AI, lorsque le baseUrl est vide, l'adresse officielle sera demandée par défaut. L'en-tête de demande peut être utilisé pour configurer des informations telles que des clés. Pour plus de détails, veuillez vous baser sur la documentation du fournisseur de service."
-    },
     "resetAppConf": {
       "label": "Réinitialiser la configuration de l'application",
       "desc": "Réinitialiser la configuration de l'application et restaurer les paramètres par défaut. Cette action réinitialise tous les paramètres, y compris le thème, la langue, l'enregistrement automatique, etc., et ne peut pas être restauré.",
@@ -427,22 +364,6 @@
       "github_issue": "Soumettre un numéro ou une proposition",
       "github_issue_desc": "Si vous rencontrez des problèmes ou avez des suggestions, n'hésitez pas à soumettre Issue sur GitHub."
     },
-    "copilot": {
-      "label": "Copilot",
-      "desc": "Configuration d'écriture assistée par l'IA, choisissez le fournisseur et le modèle d'IA que vous avez configurés, il est recommandé de sélectionner un petit modèle avec un volume de paramètres d'environ 2b ou moins pour améliorer la vitesse de réponse.",
-      "enable": {
-        "label": "Activer Copilot",
-        "desc": "Activer la fonction d'écriture assistée par AI"
-      },
-      "provider": {
-        "label": "Fournisseurs",
-        "desc": "Choisir un fournisseur de services d'IA"
-      },
-      "model": {
-        "label": "Modèle",
-        "desc": "Choisir le modèle d'IA à utiliser"
-      }
-    },
     "themeStore": {
       "label": "Magasin à thème",
       "desc": "Parcourir et télécharger des thèmes créés par la communauté pour enrichir votre apparence d'éditeur.",
@@ -530,10 +451,6 @@
       "label": "Configuration de l'en-tête de demande",
       "desc": "Ajoutez des en-têtes de requête HTTP personnalisés qui prennent en charge plusieurs configurations de paires clé-valeur."
     }
-  },
-  "ai": {
-    "capabilities": "Fonctions",
-    "export_conversation": "Exporter le contenu de la conversation en un seul clic en tant que fichier md"
   },
   "statusBar": {
     "words": "Mots",

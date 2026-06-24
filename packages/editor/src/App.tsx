@@ -104,37 +104,6 @@ const createAppWysiwygDelegate = () =>
       console.log('handleViewImgSrcUrl', src)
       return src
     },
-    ai: {
-      defaultSelectProvider: 'deepseek',
-      supportProviderInfosMap: {
-        openai: {
-          models: ['gpt-3.5-turbo', 'gpt-4'],
-        },
-        deepseek: {
-          models: ['deepseek-r1', 'deepseek-r2'],
-        },
-      },
-      generateText: (params) => {
-        console.log('params', params)
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(
-              `# JavaScript 介绍 JavaScript 是一种轻量级、解释型或即时编译型的编程语言，最初由 Netscape 的 Brendan Eich 在 1995 年发明。它被广泛用于在网页上添加动态效果，并且已经发展成为一种非常强大的后端编程语言（Node.js）。 ## 基本特点 - **解释性**：JavaScript 是一种解释型语言，代码可以在浏览器或 Node.js 环境中直接执行。 - **跨平台性**：可以在任何支持 JavaScript 的环境运行。 - **动态类型**：变量在声明时不需要指定数据类型，并且可以自由转换。 - **事件驱动**：可以响应用户操作或其他事件触发的函数调用。 ## 基本语法 ### 变量与常量 JavaScript 中，使用 \`var\`、\`let\` 和 \`const\` 来声明变量。其中，\`var\` 是最古老的声明方式，但容易造成作用域问题；\`let\` 用于块级作用域内变量的声明；\`const\` 声明不可变的常量。 \`\`\`javascript // var 例子（不推荐使用） var greeting = "Hello"; greeting = "Hi"; // 可以重新赋值 // let 例子 let number = 10; number = 20; // 可以重新赋值，但改变了变量的值 // const 例子 const PI = 3.14; PI = 3.14159; // 错误：常量不能被改变 \`\`\` ### 函数定义 JavaScript 中通过 \`function\` 关键字来定义函数。 \`\`\`javascript // 声明式函数 function greet(name) { return "Hello, " + name; } console.log(greet("Alice")); // 输出: Hello, Alice // 箭头函数（ES6 新特性） const add = (a, b) => a + b; console.log(add(2, 3)); // 输出: 5 \`\`\` ### 控制流语句 - \`if\`：条件判断。 - \`for\`、\`while\` 和 \`do...while\`：循环结构。 \`\`\`javascript let i = 0; while (i < 10) { console.log(i); i++; } \`\`\` ## DOM 操作 JavaScript 可以操作 HTML 文档，通过 DOM API 来实现。例如改变元素的属性或添加/删除节点等。 \`\`\`javascript // 获取 id 为 'example' 的元素 let element = document.getElementById("example"); // 改变元素内容 element.innerHTML = "New content"; // 添加事件监听器 element.addEventListener("click", function() { console.log("Element clicked!"); }); \`\`\` ## Node.js Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境，允许开发者使用 JavaScript 来进行服务器端开发。它支持非阻塞 I/O 操作和事件驱动编程模型。 \`\`\`javascript // 使用 Node.js 的基本示例 const http = require("http"); http.createServer((req, res) => { res.writeHead(200, { "Content-Type": "text/plain" }); res.end("Hello World\n"); }).listen(3000); console.log('Server running at http://127.0.0.1:3000/'); \`\`\` 以上就是 JavaScript 的一些基本介绍，希望对你有所帮助！`,
-            )
-          }, 5000)
-        })
-      },
-      copilot: {
-        generateText: (params) => {
-          console.log('copilot params', params)
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(`一些建议 *请问* \n - qwe`)
-            }, 2000)
-          })
-        },
-      },
-    },
   })
 
 function App() {

@@ -142,16 +142,6 @@ export const SlashMenuRoot: React.FC<SlashMenuRootProps> = memo(
         }
       ]
 
-      if (commands.createAiBlock) {
-        res.unshift({
-          title: 'AI',
-          id: 'ai',
-          iconName: 'ri-bard-line',
-          handler: () => {
-            commands.createAiBlock({})
-          },
-        })
-      }
       return res
     }, [closeMenu, commands])
 

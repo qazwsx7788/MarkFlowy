@@ -104,7 +104,7 @@ fn print_version() {
 
 fn print_cli_help() {
     println!(
-        r#"MarkFlowy - AI-Powered Markdown Editor
+        r#"MarkFlowy - Markdown Editor
 
 Usage: markflowy [COMMAND] [OPTIONS]
        mf [COMMAND] [OPTIONS]

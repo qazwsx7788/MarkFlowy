@@ -16,15 +16,6 @@
       "loading": "読み込み中",
       "accept": "承認"
     },
-    "ai": {
-      "generate": "生成",
-      "stop": "停止",
-      "retry": "再試行",
-      "regenerate": "再生成",
-      "preview": "プレビュー",
-      "error": "エラー",
-      "prompt": "プロンプト"
-    },
     "toolbar": {
       "undo": "元に戻す",
       "redo": "やり直す",
