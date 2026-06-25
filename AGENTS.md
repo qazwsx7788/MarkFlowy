@@ -12,12 +12,14 @@ MarkFlowy 是一个 Tauri (Rust) + React/TypeScript monorepo:一个桌面 Markdo
 
 `yarn install --immutable` 是唯一正确的安装命令 —— CI 用的是 `--immutable`,而 `postinstall` 会运行 `patch-package`,这是 `patches/@tauri-release+cli+0.2.5.patch` 必需的。
 
+**改依赖后必须用不带 `--immutable` 的 `yarn install` 重新生成 `yarn.lock`。** `--immutable` 模式下 lockfile 与 package.json 不一致会直接报错退出(`YN0028: The lockfile would have been modified`),CI 就是用这个模式。所以凡是改了任何 `package.json` 的 `dependencies`/`devDependencies`(新增、删除、改版本),改完必须本地跑一次普通 `yarn install`,把更新后的 `yarn.lock` **一起提交**,否则 CI 必挂在 install 步骤。
+
 ## 仓库目录结构
 
 - `apps/desktop` —— `@markflowy/desktop`。Tauri 应用。前端是 Vite + React 19;后端是 `apps/desktop/src-tauri/`(Rust crate `markflowy`,`tauri = "2.10.3"`,release 构建用 `custom-protocol` feature)。配置:`tauri.conf.json`、`vite.config.ts`(端口 3000,严格模式;为 react/tauri/ai/antd/editor/preview 手动分 vendor chunk)。入口:`apps/desktop/src/main.tsx` → `App.tsx` → `router/`。
 - `apps/web` —— `@markflowy/web`。Next.js 16 站点,端口 3100,使用 Turbopack 和 Contentlayer。**不是产品本身**,不要认为改动 `apps/web` 就会进入编辑器。
 - `packages/` —— 共享的 TS 库,每个用 esbuild(部分用 Rollup 打类型)独立构建。重点:
-  - `editor`(npm 名 `rme`)—— ProseMirror/CodeMirror 编辑器。较重:依赖 `@rme-sdk/*`(自定义)、CodeMirror 6、ProseMirror、mermaid、mathjax、antd v6。构建命令 `rimraf dist && esbuild build && rollup -c rollup.config.types.js`(后者只打类型)。
+  - `editor`(npm 名 `rme`)—— ProseMirror/CodeMirror 编辑器。较重:依赖 `@rme-sdk/*`(自定义)、CodeMirror 6、ProseMirror、mermaid(懒加载)、katex(公式)、antd v6。构建命令 `rimraf dist && esbuild build && rollup -c rollup.config.types.js`(后者只打类型)。
   - `i18n` —— esbuild,另会跑 `scripts/flatten-dts.mjs`。
   - `interface` —— "MarkFlowy 编辑器视图" 外壳(被 desktop 消费)。
   - `api-client`、`github-api`、`theme`、`types`、`runtime-api`、`zens`(UI 组件库)。
@@ -94,3 +96,7 @@ MarkFlowy 是一个 Tauri (Rust) + React/TypeScript monorepo:一个桌面 Markdo
 - macOS aarch64 构建在 `README.md` 里要求 `xattr -cr MarkFlowy.app` 来绕过 Apple 对未签名应用的限制。
 - 根目录 `tsconfig.json` 只引用 `apps/desktop/tsconfig.json` —— 基础配置并没有被直接 project-referenced。各 workspace 用自己的 `tsc` 来 typecheck。
 - `patches/` 目录和 `.yarn/releases/` 是 vendored(`.gitattributes`),但其他 `.yarn/*` 在 .gitignore 里。
+- **不要 `git add .` / "全部提交"**:工作区里常有一批**被 git 跟踪的生成产物**(注意:不在 .gitignore 里),它们被本地工具重新生成后会显示为"已修改/已删除"。典型:`apps/web/.contentlayer/generated/**`(Contentlayer 产物,web 构建直接 import 它,删了 web 构建报 `Cannot find module 'contentlayer/generated'`)、各 workspace 的 `tsconfig.tsbuildinfo`(TS 增量缓存)、`packages/zens/.dumi/**`。提交前必须 `git status` 甄别,**只提交你本次意图改动的文件**;若发现这类无关删除,用 `git checkout <旧commit> -- <路径>` 从上一个正常 commit 恢复。
+- **改 `packages/editor` 后,提交前先跑 `yarn workspace rme build` 验证**(包名是 `rme`,不是 `@markflowy/editor`)。该 build 会跑 esbuild 打包 + rollup 生成类型,能在本地捕获类型/编译错误,不必等 CI。注意 editor 依赖的 `@markflowy/i18n`/`zens` 等需先有 `dist`(见 `yarn build`),否则类型检查会报一堆 "Cannot find module '@markflowy/...'" —— 那些是依赖未构建,不是真错误。
+- **fork 上 `tauri-release.yml` 和 `contribute_list.yml` 会失败**。Release 的第一步 `actions/checkout` 需要 `secrets.ACCESS_TOKEN`(不是默认的 `GITHUB_TOKEN`),缺了秒报 `Input required and not supplied: token`;`contribute_list.yml` 要写 README,缺权限报 `Resource not accessible by integration`。这些在缺 secrets/写权限的 fork 上**本来就会失败**(与代码无关)。要真正发版需配齐第 3 节列的全部 secrets,或只关注 `build-windows.yml`/`test-ci.yml` 的构建结果。
+- **打 `v*` 标签前必须升版本号**:`apps/desktop/src-tauri/tauri.conf.json` 和 `apps/desktop/src-tauri/Cargo.toml` 两处的 `version` 必须比上一个 release 大,否则标签会重复或被覆盖。同号标签 force-push 会重新触发但属非常规操作。
