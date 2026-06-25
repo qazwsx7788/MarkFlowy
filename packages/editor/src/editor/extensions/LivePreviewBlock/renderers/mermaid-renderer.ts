@@ -1,10 +1,8 @@
 import type { Extension as CodeMirrorExtension } from '@codemirror/state'
-import mermaid from 'mermaid'
 import { eventBus } from '../../../utils/eventbus'
 import { minimalSetup } from '../../CodeMirror/setup'
 import type { LivePreviewNodeViewApi, LivePreviewRenderer } from '../live-preview-types'
-
-const renderCount = { count: 0 }
+import { renderMermaid } from './mermaid-loader'
 
 export function createMermaidRenderer(options: {
   codemirrorExtensions?: CodeMirrorExtension[]
@@ -22,16 +20,9 @@ export function createMermaidRenderer(options: {
         return
       }
 
-      renderCount.count++
-      const id = `mermaid-${renderCount.count}`
-      try {
-        const { svg, bindFunctions } = await mermaid.render(id, source)
-        container.innerHTML = svg
-        bindFunctions?.(container)
-      } catch (err) {
-        document.getElementById('d' + id)?.remove()
-        throw err
-      }
+      // renderMermaid handles caching + error-placeholder cleanup internally.
+      const svg = await renderMermaid(source)
+      container.innerHTML = svg
     },
     onMount: (view: LivePreviewNodeViewApi) => {
       eventBus.on('change-theme', view.render)

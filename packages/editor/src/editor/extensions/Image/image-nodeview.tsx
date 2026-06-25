@@ -1,11 +1,12 @@
 import type { NodeViewComponentProps } from '@rme-sdk/react'
 import { omit } from 'lodash'
 import { normalizeReference } from 'markdown-it/lib/common/utils.mjs'
-import { useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useEffectEvent, useRef } from 'react'
 import type { PopoverStore } from 'zens'
 import { Popover, Image as ZensImage } from 'zens'
 import type { ExtensionsOptions } from '..'
 import { Resizable } from '../../components/Resizable'
+import { getReferenceIndex } from '../Reference/reference-index-extension'
 import { editorZIndex } from '../../theme/z-index'
 import { isBrowser } from '../../utils/common'
 import { ImageToolTips } from './image-tool-tips'
@@ -38,43 +39,17 @@ export function ImageNodeView(props: ImageNodeViewProps) {
   const popoverStore = useRef<PopoverStore>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
   const fromPaste = node.attrs['data-rme-from-paste'] === 'true'
-  const refers = view.state.doc.content.content.filter((node) => node.type.name === 'reference_def')
-  const curRefer = useMemo(() => {
-    let res:
-      | {
-          href?: string
-          title?: string
-          label?: string
-        }
-      | undefined
-
-    refers.forEach((refer) => {
-      const labelNode = refer.content.content.find(
-        (contentNode) => contentNode.type.name === 'reference_label',
-      )
-      const hrefNode = refer.content.content.find(
-        (contentNode) => contentNode.type.name === 'reference_href',
-      )
-      const titleNode = refer.content.content.find(
-        (contentNode) => contentNode.type.name === 'reference_title',
-      )
-      if (!labelNode?.textContent || !node.attrs['data-refer-label']) {
-        return
-      }
-      if (
-        normalizeReference(labelNode?.textContent) ===
-        normalizeReference(node.attrs['data-refer-label'])
-      ) {
-        res = {
-          href: hrefNode?.textContent || '',
-          title: titleNode?.textContent || '',
-          label: labelNode?.textContent || '',
-        }
-      }
-    })
-
-    return res
-  }, [refers])
+  // Resolve this image's `[label]` reference against a document-wide index
+  // maintained by ReferenceIndexExtension (built once per doc change, shared by
+  // all images). Previously each image re-scanned the whole document + all
+  // references on every render (O(n*R)).
+  const referLabel = node.attrs['data-refer-label'] as string | undefined
+  const curRefer = (() => {
+    if (!referLabel) return undefined
+    const referIndex = getReferenceIndex(view.state)
+    const normalized = normalizeReference(referLabel)
+    return referIndex?.get(normalized)
+  })()
 
   const handlePasteEvent = useEffectEvent(async () => {
     let src = node.attrs.src || ''

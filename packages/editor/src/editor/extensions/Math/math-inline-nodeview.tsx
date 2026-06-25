@@ -3,7 +3,7 @@ import { keymap } from '@rme-sdk/pm/keymap'
 import { Node as ProseNode } from '@rme-sdk/pm/model'
 import { Command, EditorState, Plugin, TextSelection, Transaction } from '@rme-sdk/pm/state'
 import { Decoration, EditorView, NodeView } from '@rme-sdk/pm/view'
-import { tex2svg, tex2svgInline, tex2svgDisplay } from './mathjax'
+import { tex2svg, tex2svgInline, tex2svgDisplay } from './katex'
 
 function collapseCmd(
   outerView: EditorView,
@@ -46,6 +46,7 @@ export class MathInlineView implements NodeView {
   private _srcElt: HTMLElement | undefined
   private _innerView: EditorView | undefined
   private _isEditing: boolean
+  private _renderTimer: number | null = null
 
   constructor(node: ProseNode, view: EditorView, getPos: () => number | undefined) {
     this._node = node
@@ -75,6 +76,10 @@ export class MathInlineView implements NodeView {
   }
 
   destroy() {
+    if (this._renderTimer !== null) {
+      clearTimeout(this._renderTimer)
+      this._renderTimer = null
+    }
     this.closeEditor(false)
     if (this._renderElt) {
       this._renderElt.remove()
@@ -163,7 +168,17 @@ export class MathInlineView implements NodeView {
     if (!this._innerView) return
     const { state } = this._innerView.state.applyTransaction(tr)
     this._innerView.updateState(state)
-    this.renderTex(true)
+    // Debounce the (synchronous, CPU-bound) KaTeX re-render while typing inside
+    // the inline formula. Without this every keystroke runs a full compile.
+    // The constructor / update / closeEditor paths still call renderTex()
+    // directly for deterministic rendering.
+    if (this._renderTimer !== null) {
+      clearTimeout(this._renderTimer)
+    }
+    this._renderTimer = window.setTimeout(() => {
+      this._renderTimer = null
+      this.renderTex(true)
+    }, 120)
   }
 
   private openEditor = () => {

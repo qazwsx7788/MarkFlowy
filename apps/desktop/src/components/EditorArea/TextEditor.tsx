@@ -171,6 +171,14 @@ function TextEditor(props: TextEditorProps) {
     const { delIdStateMap } = useEditorStateStore.getState()
 
     delIdStateMap(id)
+    // Release the source-code CodeMirror instance for this tab. Without this
+    // the module-level map grew unbounded: closed tabs' editor views were
+    // never destroyed or removed.
+    const cmView = sourceCodeCodemirrorViewMap.get(id)
+    if (cmView) {
+      cmView.destroy()
+      sourceCodeCodemirrorViewMap.delete(id)
+    }
   })
 
   useEffect(() => {
@@ -268,8 +276,6 @@ function TextEditor(props: TextEditorProps) {
       const fileContent = editorContextRef.current?.state.doc && delegate
         ? delegate.docToString(editorContextRef.current.state.doc)
         : curFile.content
-
-      logger.info('editorContent', fileContent)
 
       try {
         if (!curFile.path) {

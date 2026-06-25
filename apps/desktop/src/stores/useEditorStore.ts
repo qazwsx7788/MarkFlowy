@@ -206,6 +206,10 @@ const useEditorStore = create<EditorStore>((set, get) => {
 
     delOpenedFile: (id: string) => {
       set((state) => {
+        // Release editor engine state held for this tab so memory is reclaimed
+        // when a tab is closed (previously these Maps were never pruned).
+        state.editorDelegateMap.delete(id)
+        state.editorCtxMap.delete(id)
         return {
           ...state,
           activeId: state.activeId === id ? undefined : state.activeId,
@@ -216,6 +220,13 @@ const useEditorStore = create<EditorStore>((set, get) => {
 
     delOtherOpenedFile: (id: string) => {
       set((state) => {
+        // Release engine state for all tabs except the one being kept.
+        state.editorDelegateMap.forEach((_, key) => {
+          if (key !== id) state.editorDelegateMap.delete(key)
+        })
+        state.editorCtxMap.forEach((_, key) => {
+          if (key !== id) state.editorCtxMap.delete(key)
+        })
         return {
           ...state,
           activeId: id,
@@ -226,6 +237,9 @@ const useEditorStore = create<EditorStore>((set, get) => {
 
     delAllOpenedFile: () => {
       set((state) => {
+        // Release all editor engine state held by open tabs.
+        state.editorDelegateMap.clear()
+        state.editorCtxMap.clear()
         return {
           ...state,
           activeId: undefined,

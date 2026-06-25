@@ -1,6 +1,6 @@
 import type { Extension as CodeMirrorExtension } from '@codemirror/state'
 import { latex } from 'codemirror-lang-latex'
-import { tex2svgDisplay } from '../../Math/mathjax'
+import { tex2svgDisplay } from '../../Math/katex'
 import type { LivePreviewRenderer } from '../live-preview-types'
 
 export function createMathRenderer(options: {

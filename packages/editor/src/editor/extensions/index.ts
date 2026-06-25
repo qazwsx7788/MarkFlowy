@@ -40,6 +40,7 @@ import {
   ReferenceHrefExtension,
   ReferenceLabelExtension,
   ReferenceTitleExtension,
+  ReferenceIndexExtension,
 } from './Reference'
 import { SlashMenuExtension } from './SlashMenu'
 import { LineTableExtension, LineTableRowExtension } from './Table'
@@ -189,6 +190,7 @@ function extensions(options: ExtensionsOptions): any[] {
     new ReferenceLabelExtension({}),
     new ReferenceHrefExtension({}),
     new ReferenceTitleExtension({}),
+    new ReferenceIndexExtension(),
 
     new TransformerExtension({}),
     new NodeIndicatorExtension(),

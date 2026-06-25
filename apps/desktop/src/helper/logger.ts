@@ -1,7 +1,10 @@
 type LogArgs = unknown[]
 
+// Vite injects import.meta.env.DEV at build time. In production builds this is
+// false, so debug/info logs (some of which serialize large objects / whole file
+// contents) are stripped from the hot path entirely.
 function isDev() {
-  return true
+  return import.meta.env.DEV
 }
 
 export const logger = {

@@ -18,7 +18,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWebview } from '@tauri-apps/api/webview'
 import { LazyStore } from '@tauri-apps/plugin-store'
-import { once } from 'lodash'
+import { debounce, once } from 'lodash'
 import { useCallback, useEffect } from 'react'
 import { toast } from 'zens'
 import { useGlobalKeyboard, useGlobalOSInfo } from '.'
@@ -224,21 +224,27 @@ async function appWorkspaceSetup() {
           setActiveId(activeFile.id)
         }
 
-        useEditorStore.subscribe((state) => {
+        // Persist the opened-tabs layout to disk. Debounced so a burst of
+        // keystrokes / tab switches doesn't trigger an IPC + file write each
+        // time (this was the main source of idle CPU usage).
+        const persistWorkspaceLayout = debounce(() => {
+          const state = useEditorStore.getState()
           const rootPath = state.getRootPath()
-          if (rootPath) {
-            const openedFiles = state.opened.map((fileId) => {
-              const file = getFileObject(fileId)
-              return file.path
-            })
+          if (!rootPath) return
 
-            cacheStore.set(rootPath, {
-              openedFilePaths: openedFiles,
-              activeFilePath: state.activeId ? getFileObject(state.activeId)?.path : '',
-            })
-            cacheStore.save()
-          }
-        })
+          const openedFiles = state.opened.map((fileId) => getFileObject(fileId)?.path)
+
+          cacheStore.set(rootPath, {
+            openedFilePaths: openedFiles,
+            activeFilePath: state.activeId ? getFileObject(state.activeId)?.path : '',
+          })
+          cacheStore.save()
+        }, 800)
+
+        // Note: zustand's default subscribe fires on every state change.
+        // persistWorkspaceLayout is debounced, so a high frequency of store
+        // updates (keystrokes, etc.) collapses into a single disk write.
+        useEditorStore.subscribe(persistWorkspaceLayout)
       } catch (error) {
         logger.error('Failed to read directory:', targetWorkspacePath, error)
         logger.error('This might be due to sandbox restrictions or the directory no longer exists')

@@ -1,11 +1,11 @@
 import type { Langs } from '@markflowy/i18n'
 import { changeLng, i18nInit, isInitialized, locales } from '@markflowy/i18n'
-import mermaid from 'mermaid'
 import { memo, useEffect, useRef } from 'react'
 import { ThemeProvider as ScThemeProvider } from 'styled-components'
 import { CreateThemeOptions, changeTheme } from '../codemirror'
 import { darkTheme, lightTheme } from '../theme'
 import { eventBus } from '../utils/eventbus'
+import { initMermaid } from '../extensions/LivePreviewBlock/renderers/mermaid-loader'
 
 export * from './Editor'
 
@@ -49,11 +49,14 @@ export const ThemeProvider: React.FC<Props> = memo(({ theme, i18n, children }: P
         : lightTheme.codemirrorTheme
     changeTheme(codemirrorTheme)
 
-    mermaid.initialize({
-      theme: mode === 'dark' ? 'dark' : 'default',
-    })
-
-    eventBus.emit('change-theme')
+    // Mermaid is lazy-loaded: ensure it's initialized with the right theme
+    // BEFORE emitting 'change-theme', otherwise mermaid blocks would redraw
+    // with the previous theme (or before first initialization).
+    const applyTheme = async () => {
+      await initMermaid(mode === 'dark' ? 'dark' : 'default')
+      eventBus.emit('change-theme')
+    }
+    applyTheme()
   }, [mode, theme?.codemirrorTheme, changeTheme])
 
   return <ScThemeProvider theme={themeToken}>{children}</ScThemeProvider>

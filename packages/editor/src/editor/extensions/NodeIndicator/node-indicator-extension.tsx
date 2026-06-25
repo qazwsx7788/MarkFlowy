@@ -2,6 +2,7 @@ import { isHTMLElement } from '@ocavue/utils'
 import { CreateExtensionPlugin, EditorView, PlainExtension, ResolvedPos } from '@rme-sdk/core'
 import { NodeSelection, PluginKey, TextSelection } from '@rme-sdk/pm/state'
 import { buildGetTarget, GetTarget } from './drop-target'
+import { setBlockHandlerPosition } from './block-handler-position'
 import { findBlockByCoords, findFirstLineRect } from './node-target'
 import type { NodeIndicatorState, ViewDragging } from './types'
 
@@ -168,15 +169,15 @@ function handlePointerMove(view: EditorView, event: Event, pluginKey: PluginKey)
     newPos = parentPos
   }
 
-  if (currentState?.pos === newPos && currentState?.node && newNode.type === currentState?.node.type) {
-    return
-  }
-
   const newElement = view.nodeDOM(newPos)
   if (!newElement || !isHTMLElement(newElement)) {
     return
   }
 
+  // Compute the indicator rect and update the BlockHandler position directly
+  // via the DOM-ref bridge. This avoids driving a ProseMirror transaction (and
+  // a React re-render) on every pointer position change; the transaction below
+  // is dispatched only when the hovered block actually changes.
   let rect
   if ($pos.depth > 0 && $pos.index($pos.depth) === 0) {
     const parentElement = view.nodeDOM($pos.before($pos.depth))
@@ -185,11 +186,22 @@ function handlePointerMove(view: EditorView, event: Event, pluginKey: PluginKey)
     rect = findFirstLineRect(undefined, newElement)
   }
 
+  if (rect) {
+    setBlockHandlerPosition(rect)
+  }
+
+  // Only dispatch a structural change (block transition). Position updates are
+  // handled above via the DOM ref, so we don't need to carry `rect` here —
+  // keeping React renders down to one per block change.
+  if (currentState?.pos === newPos && currentState?.node && newNode.type === currentState?.node.type) {
+    return
+  }
+
   view.dispatch(
     view.state.tr.setMeta(pluginKey, {
       node: newNode,
       pos: newPos,
-      rect: rect || {},
+      rect: rect || null,
     }),
   )
 }

@@ -17,7 +17,6 @@ function EditorArea() {
     const disposable = commandRegistry.registerCommand({
       id: EVENT.app_toggleEditorType,
       handler: () => {
-        console.log('qweqw')
         const { activeId } = useEditorStore.getState()
         if (!activeId) return
 

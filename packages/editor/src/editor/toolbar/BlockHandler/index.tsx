@@ -13,6 +13,7 @@ import {
   NodeIndicatorExtension,
   NodeIndicatorState,
 } from '../../extensions/NodeIndicator/node-indicator-extension'
+import { blockHandlerPosition } from '../../extensions/NodeIndicator/block-handler-position'
 import { editorZIndex } from '../../theme/z-index'
 import { useBlockTypeOptions } from './useBlockTypeOptions'
 
@@ -209,6 +210,19 @@ export const BlockHandler = memo(({ getMenuBoundary }: BlockHandlerProps) => {
   }, [dropdownOpen])
 
   const displayState = dropdownOpen ? displayStateRef.current : state
+
+  // Register the BlockHandler container with the NodeIndicator position bridge
+  // so the (non-React) pointermove handler can move this element directly,
+  // avoiding a React re-render on every pointer position change. The container
+  // only exists while a block is hovered, so we sync on every render.
+  useEffect(() => {
+    blockHandlerPosition.el = triggerRef.current
+    return () => {
+      if (blockHandlerPosition.el === triggerRef.current) {
+        blockHandlerPosition.el = null
+      }
+    }
+  })
 
   const transformOptions = useMemo(() => {
     const currentNode = displayState?.node

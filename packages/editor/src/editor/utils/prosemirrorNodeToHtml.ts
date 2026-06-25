@@ -3,10 +3,10 @@ import { type Node } from '@rme-sdk/pm/model'
 // @ts-ignore
 import HTML from 'html-parse-stringify'
 import { normalizeReference } from 'markdown-it/lib/common/utils.mjs'
-import mermaid from 'mermaid'
 import { nanoid } from 'nanoid'
 import { EditorProps } from '../components'
 import { HTMLAstNode } from '../components/Preview'
+import { renderMermaid } from '../extensions/LivePreviewBlock/renderers/mermaid-loader'
 import { isBrowser } from './common'
 
 export const handlerByAdditions: Record<
@@ -61,11 +61,8 @@ export const handlerByAdditions: Record<
           textContent = dom.textContent || ''
         }
 
-        const res = await mermaid.render(
-          `mermaid_${previewMermaidRenderCount.count++}`,
-          textContent,
-        )
-        const svgAst = HTML.parse(res.svg)
+        const svg = await renderMermaid(textContent)
+        const svgAst = HTML.parse(svg)
 
         node.name = 'div'
         node.attrs = {
@@ -76,8 +73,6 @@ export const handlerByAdditions: Record<
     },
   ],
 }
-
-const previewMermaidRenderCount = { count: 0 }
 
 export const rmeProsemirrorNodeToHtml = async (
   doc: Node,
@@ -105,7 +100,6 @@ export const rmeProsemirrorNodeToHtml = async (
       }
     }
   }
-  console.log('preview', referenceDefs, fullAst)
 
   const imageLoadTasks: Promise<void>[] = []
   const handleHtmlText = (ast: HTMLAstNode[]) => {
