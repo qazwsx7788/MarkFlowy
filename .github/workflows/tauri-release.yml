@@ -204,32 +204,100 @@ jobs:
           path: artifacts/offline-installer
           merge-multiple: true
 
+      - name: List all artifacts for debugging
+        run: |
+          echo "=== Listing all downloaded artifacts ==="
+          find artifacts -type f -ls
+
       - name: Rename artifacts
         run: |
-          mv "artifacts/aarch64/dmg/MarkFlowy_${{ env.version }}_aarch64.dmg" "artifacts/MarkFlowy_v${{ env.version }}_aarch64.dmg"
-          mv "artifacts/aarch64/macos/MarkFlowy.app.tar.gz" "artifacts/MarkFlowy_aarch64.app.tar.gz"
-          mv "artifacts/aarch64/macos/MarkFlowy.app.tar.gz.sig" "artifacts/MarkFlowy_aarch64.app.tar.gz.sig"
+          set -e
+          echo "=== Starting rename process ==="
+          
+          # macOS aarch64 (Apple Silicon)
+          if ls artifacts/aarch64/dmg/*.dmg 1> /dev/null 2>&1; then
+            mv artifacts/aarch64/dmg/*.dmg "artifacts/MarkFlowy_v${{ env.version }}_aarch64.dmg"
+            echo "Moved aarch64 dmg"
+          fi
+          if ls artifacts/aarch64/macos/*.app.tar.gz 1> /dev/null 2>&1; then
+            mv artifacts/aarch64/macos/*.app.tar.gz "artifacts/MarkFlowy_aarch64.app.tar.gz"
+            echo "Moved aarch64 app.tar.gz"
+          fi
+          if ls artifacts/aarch64/macos/*.app.tar.gz.sig 1> /dev/null 2>&1; then
+            mv artifacts/aarch64/macos/*.app.tar.gz.sig "artifacts/MarkFlowy_aarch64.app.tar.gz.sig"
+            echo "Moved aarch64 app.tar.gz.sig"
+          fi
 
-          mv "artifacts/x86_64/dmg/MarkFlowy_${{ env.version }}_x64.dmg" "artifacts/MarkFlowy_v${{ env.version }}_x64.dmg"
-          mv "artifacts/x86_64/macos/MarkFlowy.app.tar.gz" "artifacts/MarkFlowy_x64.app.tar.gz"
-          mv "artifacts/x86_64/macos/MarkFlowy.app.tar.gz.sig" "artifacts/MarkFlowy_x64.app.tar.gz.sig"
+          # macOS x86_64 (Intel)
+          if ls artifacts/x86_64/dmg/*.dmg 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/dmg/*.dmg "artifacts/MarkFlowy_v${{ env.version }}_x64.dmg"
+            echo "Moved x86_64 dmg"
+          fi
+          if ls artifacts/x86_64/macos/*.app.tar.gz 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/macos/*.app.tar.gz "artifacts/MarkFlowy_x64.app.tar.gz"
+            echo "Moved x86_64 app.tar.gz"
+          fi
+          if ls artifacts/x86_64/macos/*.app.tar.gz.sig 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/macos/*.app.tar.gz.sig "artifacts/MarkFlowy_x64.app.tar.gz.sig"
+            echo "Moved x86_64 app.tar.gz.sig"
+          fi
 
-          mv "artifacts/x86_64/deb/MarkFlowy_${{ env.version }}_amd64.deb" "artifacts/MarkFlowy_v${{ env.version }}_amd64.deb"
-          mv "artifacts/x86_64/appimage/MarkFlowy_${{ env.version }}_amd64.AppImage" "artifacts/MarkFlowy_v${{ env.version }}_amd64.AppImage"
-          mv "artifacts/x86_64/appimage/MarkFlowy_${{ env.version }}_amd64.AppImage.sig" "artifacts/MarkFlowy_v${{ env.version }}_amd64.AppImage.sig"
-          mv artifacts/x86_64/rpm/* artifacts/
+          # Linux
+          if ls artifacts/x86_64/deb/*.deb 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/deb/*.deb "artifacts/MarkFlowy_v${{ env.version }}_amd64.deb"
+            echo "Moved deb"
+          fi
+          if ls artifacts/x86_64/appimage/*.AppImage 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/appimage/*.AppImage "artifacts/MarkFlowy_v${{ env.version }}_amd64.AppImage"
+            echo "Moved AppImage"
+          fi
+          if ls artifacts/x86_64/appimage/*.AppImage.sig 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/appimage/*.AppImage.sig "artifacts/MarkFlowy_v${{ env.version }}_amd64.AppImage.sig"
+            echo "Moved AppImage sig"
+          fi
+          if ls artifacts/x86_64/rpm/* 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/rpm/* artifacts/
+            echo "Moved rpm"
+          fi
 
-          mv "artifacts/x86_64/msi/MarkFlowy_${{ env.version }}_x64_en-US.msi" "artifacts/MarkFlowy_v${{ env.version }}_x64.msi"
-          mv "artifacts/x86_64/msi/MarkFlowy_${{ env.version }}_x64_en-US.msi.sig" "artifacts/MarkFlowy_v${{ env.version }}_x64.msi.sig"
+          # Windows
+          if ls artifacts/x86_64/msi/*.msi 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/msi/*.msi "artifacts/MarkFlowy_v${{ env.version }}_x64.msi"
+            echo "Moved msi"
+          fi
+          if ls artifacts/x86_64/msi/*.msi.sig 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/msi/*.msi.sig "artifacts/MarkFlowy_v${{ env.version }}_x64.msi.sig"
+            echo "Moved msi sig"
+          fi
+          if ls artifacts/x86_64/nsis/*.exe 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/nsis/*.exe "artifacts/MarkFlowy_v${{ env.version }}_x64-setup.exe"
+            echo "Moved nsis exe"
+          fi
+          if ls artifacts/x86_64/nsis/*.exe.sig 1> /dev/null 2>&1; then
+            mv artifacts/x86_64/nsis/*.exe.sig "artifacts/MarkFlowy_v${{ env.version }}_x64-setup.exe.sig"
+            echo "Moved nsis exe sig"
+          fi
 
-          mv "artifacts/x86_64/nsis/MarkFlowy_${{ env.version }}_x64-setup.exe" "artifacts/MarkFlowy_v${{ env.version }}_x64-setup.exe"
-          mv "artifacts/x86_64/nsis/MarkFlowy_${{ env.version }}_x64-setup.exe.sig" "artifacts/MarkFlowy_v${{ env.version }}_x64-setup.exe.sig"
+          # Windows offline installer
+          if ls artifacts/offline-installer/msi/*.msi 1> /dev/null 2>&1; then
+            mv artifacts/offline-installer/msi/*.msi "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64.msi"
+            echo "Moved offline msi"
+          fi
+          if ls artifacts/offline-installer/msi/*.msi.sig 1> /dev/null 2>&1; then
+            mv artifacts/offline-installer/msi/*.msi.sig "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64.msi.sig"
+            echo "Moved offline msi sig"
+          fi
+          if ls artifacts/offline-installer/nsis/*.exe 1> /dev/null 2>&1; then
+            mv artifacts/offline-installer/nsis/*.exe "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64-setup.exe"
+            echo "Moved offline nsis exe"
+          fi
+          if ls artifacts/offline-installer/nsis/*.exe.sig 1> /dev/null 2>&1; then
+            mv artifacts/offline-installer/nsis/*.exe.sig "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64-setup.exe.sig"
+            echo "Moved offline nsis exe sig"
+          fi
 
-          mv "artifacts/offline-installer/msi/MarkFlowy_${{ env.version }}_x64_en-US.msi" "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64.msi"
-          mv "artifacts/offline-installer/msi/MarkFlowy_${{ env.version }}_x64_en-US.msi.sig" "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64.msi.sig"
-
-          mv "artifacts/offline-installer/nsis/MarkFlowy_${{ env.version }}_x64-setup.exe" "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64-setup.exe"
-          mv "artifacts/offline-installer/nsis/MarkFlowy_${{ env.version }}_x64-setup.exe.sig" "artifacts/MarkFlowy_v${{ env.version }}_offline_installer_x64-setup.exe.sig"
+          echo "=== Final artifacts listing ==="
+          ls -la artifacts/
 
       - run: |
           cat > release.txt << EOF
