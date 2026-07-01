@@ -1,0 +1,82 @@
+name: Build macOS
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    # 手动触发：Actions 页面 -> Run workflow。手动运行时只构建并产出 artifact，不发布 Release。
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: aarch64-apple-darwin
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack (yarn)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Setup
+        run: yarn setup
+
+      - name: Build workspaces
+        run: yarn build
+
+      - name: Install rust target
+        run: rustup target add aarch64-apple-darwin
+
+      - name: Build the app
+        run: yarn build:desktop --target aarch64-apple-darwin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-artifacts
+          path: |
+            ./target/aarch64-apple-darwin/release/bundle/dmg/**
+            ./target/aarch64-apple-darwin/release/bundle/macos/**
+          if-no-files-found: error
+
+  release:
+    needs: build-macos
+    # 仅在 tag 推送时发布 Release；手动触发(workflow_dispatch)跳过此步骤。
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-artifacts
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ./artifacts/**/*
+          prerelease: true
