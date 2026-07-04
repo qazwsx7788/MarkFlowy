@@ -104,7 +104,7 @@ export const TabItem = styled.div<TabItemProps>`
   border-left: 1px solid ${(props) => props.theme.borderColor};
   background-color: ${(props) =>
     props.active ? props.theme.editorTabActiveBgColor : props.theme.editorTabBgColor};
-  border-bottom: 2px solid
+  border-bottom: 1px solid
     ${(props) => (props.active ? props.theme.editorTabActiveBgColor : props.theme.borderColor)};
   box-sizing: border-box;
   white-space: nowrap;

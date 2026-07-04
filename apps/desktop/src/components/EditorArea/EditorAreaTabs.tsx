@@ -42,6 +42,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 0 ${(props) => props.theme.spaceXs};
+    box-sizing: border-box;
     border-bottom: 1px solid ${(props) => props.theme.borderColor};
     border-right: 1px solid ${(props) => props.theme.borderColor};
   }

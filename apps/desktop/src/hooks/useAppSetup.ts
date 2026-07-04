@@ -81,7 +81,7 @@ async function appThemeExtensionsSetup() {
       }
     }
 
-    initFromSettings(settingData)
+    await initFromSettings(settingData)
 
     logger.debug('Loading local themes...')
     const localThemes = await invoke<LocalTheme[]>('load_local_themes')
@@ -378,6 +378,12 @@ const useAppSetup = () => {
       }
     })
 
+    const themeChanged = currentWindow.onThemeChanged(({ payload }) => {
+      if (payload === 'dark' || payload === 'light') {
+        useThemeStore.getState().setSystemTheme(payload)
+      }
+    })
+
     const unListenMenu = currentWindow.listen<string>('native:menu', ({ payload }) => {
       bus.emit(payload)
       commandRegistry.execute(payload)
@@ -397,6 +403,7 @@ const useAppSetup = () => {
       closeRequest.then((fn) => fn())
       unListenOpenedUrls.then((fn) => fn())
       settingDataUpdate.then((fn) => fn())
+      themeChanged.then((fn) => fn())
     }
   }, [])
 
