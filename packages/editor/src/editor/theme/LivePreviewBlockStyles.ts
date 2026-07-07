@@ -207,11 +207,30 @@ export const livePreviewBlockStyles = css`
     }
   }
 
-  /* mermaid 在 preview 模式下只占一半宽度并居中,避免单图占满整屏 */
-  .mf-live-preview-mermaid[data-mode='preview'] .mf-live-preview-render {
-    width: 50%;
-    max-width: 50%;
-    margin: 0 auto;
+  /*
+   * mermaid 的 split 模式改为上下分栏:源码在上、渲染图在下。
+   * 流程图通常较宽,左右分栏会让两侧都很挤;上下分栏让两边都占满宽度,
+   * 图最大最清晰,且源码仍可编辑。仅影响 mermaid,math/html 不变。
+   */
+  .mf-live-preview-mermaid[data-mode='split'] {
+    .mf-live-preview-body {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(120px, auto) auto minmax(168px, 1fr);
+    }
+
+    /* 中间分隔线由竖变横 */
+    .mf-live-preview-divider {
+      width: 100%;
+      height: 1px;
+      border-left: 0;
+      border-top: 1px solid ${(props) => props.theme.borderColor};
+
+      i {
+        width: 34px;
+        height: 16px;
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+    }
   }
 
   .mf-live-preview-fullscreen {
