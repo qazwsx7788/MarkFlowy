@@ -207,6 +207,13 @@ export const livePreviewBlockStyles = css`
     }
   }
 
+  /* mermaid 在 preview 模式下只占一半宽度并居中,避免单图占满整屏 */
+  .mf-live-preview-mermaid[data-mode='preview'] .mf-live-preview-render {
+    width: 50%;
+    max-width: 50%;
+    margin: 0 auto;
+  }
+
   .mf-live-preview-fullscreen {
     position: fixed;
     inset: 0;
