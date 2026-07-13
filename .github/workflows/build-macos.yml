@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - sync/upstream-features
   workflow_dispatch:
     # 手动触发：Actions 页面 -> Run workflow。手动运行时只构建并产出 artifact，不发布 Release。
 
