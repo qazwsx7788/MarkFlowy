@@ -32,18 +32,6 @@
     },
     "shell": {
       "open": true
-    },
-    "updater": {
-      "endpoints": [
-        "http://api.upgrade.toolsetlink.com/v1/tauri/upgrade?tauriKey=xpn68m4j5qU0Y1rfDYFHaA&versionName={{current_version}}&appointVersionName=&devModelKey=&devKey=&target={{target}}&arch={{arch}}",
-        "https://drl990114.github.io/MarkFlowy/install.json",
-        "https://github.com/drl990114/MarkFlowy/releases/latest/download/install.json"
-      ],
-      "dangerousInsecureTransportProtocol": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDg3M0ZEQUYyOEMyNjVCNTSKUldSU1d5YU04dG8vaDFTemY1RVdrTWNNTUdvMlQ3K05nMnJSQzc5cldQZXM4N2N1ejF3UnJsM1kK",
-      "windows": {
-        "installMode": "passive"
-      }
     }
   },
   "bundle": {
@@ -65,7 +53,6 @@
         "role": "Editor"
       }
     ],
-    "createUpdaterArtifacts": false,
     "category": "DeveloperTool",
     "icon": [
       "icons/32x32.png",

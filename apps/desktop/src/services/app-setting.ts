@@ -20,7 +20,6 @@ export const appSettingStoreSetup = async () => {
       theme_accent_color: 'system',
       language: 'en',
       webview_zoom: '1.0',
-      auto_update: false,
     }
     setSettingData(defaultSetting)
     return defaultSetting

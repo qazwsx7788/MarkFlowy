@@ -1,5 +1,4 @@
 import Logo from '@/assets/logo.svg?react'
-import { installUpdate } from '@/helper/updater'
 import type { SettingData } from '@/router/Setting/settingMap'
 import { getSettingMap } from '@/router/Setting/settingMap'
 import { appSettingStoreSetup } from '@/services/app-setting'
@@ -7,11 +6,9 @@ import { dialog } from '@/services/dialog'
 import useAppInfoStore from '@/stores/useAppInfoStore'
 import { invoke } from '@tauri-apps/api/core'
 import { openUrl } from '@tauri-apps/plugin-opener'
-import type { Update } from '@tauri-apps/plugin-updater'
-import { check } from '@tauri-apps/plugin-updater'
 import classNames from 'classnames'
 import type { ReactNode } from 'react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useState } from 'react'
 import { useTranslation } from '@/i18n'
 import { Button, toast } from 'zens'
 import SettingGroup from './component/SettingGroup'
@@ -44,7 +41,6 @@ function Setting() {
   const [value, setValue] = useState(0)
   const { appInfo } = useAppInfoStore()
   const { t } = useTranslation()
-  const [update, setUpdate] = useState<Update | null>(null)
   const settingMap = getSettingMap()
 
   const handleResetConfiguration = async () => {
@@ -79,12 +75,6 @@ function Setting() {
   const curGroupKeys = Object.keys(curGroup).filter(
     (key) => key !== 'i18nKey' && key !== 'iconName' && key !== 'desc',
   ) as Exclude<keyof SettingData, 'i18nKey' | 'iconName' | 'desc'>[]
-
-  useEffect(() => {
-    check().then((u) => {
-      setUpdate(u)
-    })
-  }, [])
 
   const renderCurrentSettingData = () => {
     if (curGroupKey === 'keyboard') {
@@ -179,19 +169,6 @@ function Setting() {
           <span>
             {t('about.version')}: {appInfo.version}
           </span>
-          {update ? (
-            <Button
-              size='small'
-              btnType='primary'
-              onClick={() => {
-                installUpdate(update)
-                setUpdate(null)
-              }}
-            >
-              {t('about.install')}
-              {t('about.newVersion')}: {update.version}
-            </Button>
-          ) : null}
         </div>
       </div>
       <div id='detail'>

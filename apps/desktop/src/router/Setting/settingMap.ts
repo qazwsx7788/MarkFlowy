@@ -12,16 +12,6 @@ export const getSettingMap = () => {
       },
       App: {
         i18nKey: 'settings.general.app.label',
-        auto_update: {
-          key: 'auto_update',
-          title: {
-            i18nKey: 'settings.general.app.automatic_updates.label',
-          },
-          desc: {
-            i18nKey: 'settings.general.app.automatic_updates.desc',
-          },
-          type: 'switch',
-        },
       },
       'Auto Save': {
         i18nKey: 'settings.general.autosave.label',

@@ -132,8 +132,6 @@
   "about": {
     "label": "About",
     "version": "バージョン",
-    "newVersion": "新しいバージョン",
-    "install": "インストール",
     "author": "著者",
     "release": "リリース",
     "website": "ウェブサイト",
@@ -185,11 +183,7 @@
     "general": {
       "label": "一般",
       "app": {
-        "label": "アプリケーション",
-        "automatic_updates": {
-          "label": "自動更新",
-          "desc": "アプリケーション起動時に自動的に更新を確認し、インストールします。"
-        }
+        "label": "アプリケーション"
       },
       "autosave": {
         "label": "自動保存",
@@ -410,10 +404,6 @@
       "online_themes": "オンラインテーマ",
       "local_css_files": "ローカルCSSファイル"
     }
-  },
-  "updater": {
-    "install": "インストール",
-    "download_and_install": "ダウンロードしてインストール"
   },
   "workspace": {
     "info": "ワークスペース情報",

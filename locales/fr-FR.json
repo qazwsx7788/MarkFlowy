@@ -124,8 +124,6 @@
   "about": {
     "label": "À propos",
     "version": "Version",
-    "newVersion": "Nouvelle version",
-    "install": "Installer",
     "author": "Auteur",
     "release": "Sortie",
     "website": "Site Web",
@@ -177,11 +175,7 @@
     "general": {
       "label": "général",
       "app": {
-        "label": "application",
-        "automatic_updates": {
-          "label": "Mise à jour automatique",
-          "desc": "Vérifier automatiquement les mises à jour et les installer au lancement de l'application."
-        }
+        "label": "application"
       },
       "autosave": {
         "label": "Enregistrement automatique",
@@ -402,10 +396,6 @@
       "online_themes": "Thèmes en ligne",
       "local_css_files": "Fichiers CSS locaux"
     }
-  },
-  "updater": {
-    "install": "installer",
-    "download_and_install": "Télécharger et installer"
   },
   "placeholder": {
     "translate": "Veuillez saisir la langue cible"

@@ -53,7 +53,6 @@
     "store:allow-set",
     "store:allow-save",
     "store:allow-get-store",
-    "updater:default",
     "notification:default",
     "clipboard-manager:default",
     "clipboard-manager:allow-write-text",

@@ -5,7 +5,6 @@ import { hasFileExcludePatternsChanged } from '@/helper/file-exclude'
 import { getFileObject, getFileObjectByPath, getSaveOpenedEditorEntries } from '@/helper/files'
 import { createFile, getFileNameFromPath, fileUrlToPath, readDirectory, releaseSecurityScope } from '@/helper/filesys'
 import { logger } from '@/helper/logger'
-import { checkUpdate } from '@/helper/updater'
 import { i18nInit } from '@/i18n'
 import { appSettingStoreSetup } from '@/services/app-setting'
 import { checkUnsavedFiles } from '@/services/checkUnsavedFiles'
@@ -319,8 +318,6 @@ const appSetup = once(async function () {
     i18nInit({ lng: settingData.language }),
     appWorkspaceSetup(),
   ])
-
-  checkUpdate({ install: settingData.auto_update })
 
   return settingData
 })

@@ -137,8 +137,6 @@
   "about": {
     "label": "About",
     "version": "Version",
-    "newVersion": "New version",
-    "install": "Install",
     "author": "Author",
     "release": "Release",
     "website": "Website",
@@ -219,11 +217,7 @@
     "general": {
       "label": "general",
       "app": {
-        "label": "application",
-        "automatic_updates": {
-          "label": "Automatic update",
-          "desc": "Automatically check for updates and install them when the application starts."
-        }
+        "label": "application"
       },
       "autosave": {
         "label": "Autosave",
@@ -444,10 +438,6 @@
       "online_themes": "Online Themes",
       "local_css_files": "Local CSS file"
     }
-  },
-  "updater": {
-    "install": "install",
-    "download_and_install": "Download and install"
   },
   "workspace": {
     "info": "Workspace Information",
